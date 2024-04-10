@@ -165,7 +165,7 @@ class Model_wiki:
         page.save('add {{Wikidata Infobox}} template')
 
 
-    def category_add_template_taken_on(self, categoryname, location, dry_run=True, interactive=False, levels=0):
+    def category_add_template_taken_on(self, categoryname, location, dry_run=True, interactive=False, levels=0, skip_location=''):
         assert categoryname
         total_files = 0
         def page_generators(categoryname):
@@ -192,10 +192,13 @@ class Model_wiki:
             print(page,end='')
             badpage=False
             if not str(page)[2:-2].lower().endswith(('jpg','jpeg','tif','webm','webp')): 
-                print(' < skip',end='')
+                print(' < skip this format',end='')
                 badpage=True
             if any(ele in page.text for ele in rejected_usernames): 
                 print(' < skip this user ',end='')
+                badpage=True
+            if skip_location != '' and '|location='+skip_location in page.text:
+                print(' < skip this location ',end='')
                 badpage=True
             
             if badpage==False: pagenames.append(page.title())
@@ -213,7 +216,7 @@ class Model_wiki:
         
         pagegenerator=page_generators(categoryname)
         for page in pagegenerator:
-            if str(page)[2:-2].lower().endswith(('png','svg')): continue
+            if not str(page)[2:-2].lower().endswith(('jpg','jpeg','tif','webm','webp')): continue
             if any(ele in page.text for ele in rejected_usernames): continue
             
             self.page_template_taken_on(
@@ -815,8 +818,9 @@ class Model_wiki:
                 texts[1] = self._text_add_template_taken_on(texts[0])
             except:
                 raise ValueError('invalid page text in ' + page.full_url())
-        assert 'Taken on'.upper() in texts[1].upper() or 'Taken in'.upper() in texts[1].upper() or 'According to Exif data'.upper(
-        ) in texts[1].upper(), 'wrong text in '+page.title()
+        if 'Taken on'.upper() in texts[1].upper() or 'Taken in'.upper() in texts[1].upper() or 'According to Exif data'.upper(
+        ) in texts[1].upper():
+            print('wrong text in '+page.title())
 
         datestr = self.get_date_from_pagetext(texts[1])
         if datestr == False:
