@@ -5,20 +5,23 @@
 
 # https://commons.wikimedia.org/wiki/Category:Photographs_of_Russia_by_date
 
-python3 set-taken-on.py --location "Moscow" --category "Murder of Anastasiya Meshcheryakova"  --levels 1
-
-python3 set-taken-on.py --location "Moscow Oblast" --category 'Category:Kotelniki (Moscow Metro)'
-python3 set-taken-on.py --location "Moscow" --category 'Stations of Tagansko-Krasnopresnenskaya Line' --levels 2 --skip-location 'Moscow Oblast'
 
 
-python3 set-taken-on.py --location "Sakhalin Oblast" --category 'Category:Cultural heritage monuments in Sakhalin Oblast' --levels 3
-python3 set-taken-on.py --location "Sakhalin Oblast" --category 'Buildings in Sakhalin Oblast' --levels 3
-python3 set-taken-on.py --location "Moscow" --category "Category:Premia Runeta 2017"
-python3 set-taken-on.py --location "Moscow Oblast" --category "Category:Lobnya" --levels 1
-python3 set-taken-on.py --location "Primorsky Krai" --category "Category:Buildings in Vladivostok" --levels 3
-python3 set-taken-on.py --location "Moscow" --category 'Moscow International Book Fair' --levels 1
-python3 set-taken-on.py --location "Moscow" --category "Category:May 2016 in Moscow"
-python3 set-taken-on.py --location "Moscow" --category "Category:Novodevichy cemetery (Moscow)"
+
+python3 set-taken-on.py --location "Kostroma Oblast" --category 'Category:Buildings in Makaryev' --levels 3
+
+python3 set-taken-on.py --location "Kostroma Oblast" --category 'Category:Buildings in Kostroma Oblast' --levels 3
+python3 set-taken-on.py --location "Kostroma Oblast" --category 'Category:Buildings in Sudislavl' --levels 3
+python3 set-taken-on.py --location "Kostroma Oblast" --category 'Category:Cultural heritage monuments in Soligalich‎' --levels 3
+python3 set-taken-on.py --location "Kostroma Oblast" --category 'Category:Cultural heritage monuments in Soligalichsky District‎' --levels 3
+python3 set-taken-on.py --location "Moscow Oblast" --category 'Category:Cultural heritage monuments in Serpukhov‎' --levels 3
+
+
+
+
+python3 set-taken-on.py --location "Moscow" --category "Category:April_2020_in_Moscow" --levels 2
+python3 set-taken-on.py --location "Murmansk Oblast" --category "Category:Aurora cinema, Murmansk" --levels 2
+#python3 set-taken-on.py --location "Moscow" --category "Category:Novodevichy cemetery (Moscow)" --levels 2
 
 
 
@@ -30,9 +33,4 @@ python3 set-taken-on.py --location "Moscow" --category "Category:Novodevichy cem
 
 
 
-
-
-
-
-
-
+#35.139869237069455, 137.23594724540266

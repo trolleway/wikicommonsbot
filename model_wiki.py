@@ -183,42 +183,54 @@ class Model_wiki:
             return gen2
         
         rejected_usernames=['test_string_for_skip_artem_svetlov_bot','Юрий Д.К.']
+        stop_words=['cat=no','Герб','Карта']
         pagegenerator=page_generators(categoryname)
-        pagenames=list()
+        pages=list()
         for page in pagegenerator:
         
 
             
             print(page,end='')
             badpage=False
-            if not str(page)[2:-2].lower().endswith(('jpg','jpeg','tif','webm','webp')): 
+            if not str(page)[2:-2].lower().endswith(('jpg','jpeg','tif','tiff','webm','webp')): 
                 print(' < skip this format',end='')
                 badpage=True
             if any(ele in page.text for ele in rejected_usernames): 
                 print(' < skip this user ',end='')
                 badpage=True
-            if skip_location != '' and '|location='+skip_location in page.text:
-                print(' < skip this location ',end='')
+            if any(ele in page.text for ele in stop_words): 
+                print(' < skip because stop word ',end='')
                 badpage=True
             
-            if badpage==False: pagenames.append(page.title())
+            #print()
+            #print(page.title())
+            #print('|location='+skip_location)
+            #print('|location='+skip_location in page.text)
+
+            if skip_location != '' and '|location='+skip_location in page.text:
+                print(' < skip this '+ '|location='+skip_location,end='')
+                badpage=True
+            
+            if badpage==False: pages.append(page)
             print()
             
             total_files = total_files+1
         print('filtered pages list:')    
-        print("\n".join(pagenames))
+        for i in pages:
+            print(i.title())
+        #print("\n".join(pages))
 
         logging.getLogger().setLevel(logging.WARNING)
 
         
-        location = location.title()
+        
         pbar = tqdm(total=total_files)
         
-        pagegenerator=page_generators(categoryname)
-        for page in pagegenerator:
-            if not str(page)[2:-2].lower().endswith(('jpg','jpeg','tif','webm','webp')): continue
-            if any(ele in page.text for ele in rejected_usernames): continue
-            
+        #pagegenerator=page_generators(categoryname)
+        #for page in pagegenerator:
+        #    if not str(page)[2:-2].lower().endswith(('jpg','jpeg','tif','webm','webp')): continue
+        #    if any(ele in page.text for ele in rejected_usernames): continue
+        for page in pages:    
             self.page_template_taken_on(
                 page, location, dry_run, interactive, verbose=False, message=f'Set taken on location={location} for files in category {categoryname}')
             pbar.update(1)
@@ -818,9 +830,9 @@ class Model_wiki:
                 texts[1] = self._text_add_template_taken_on(texts[0])
             except:
                 raise ValueError('invalid page text in ' + page.full_url())
-        if 'Taken on'.upper() in texts[1].upper() or 'Taken in'.upper() in texts[1].upper() or 'According to Exif data'.upper(
-        ) in texts[1].upper():
-            print('wrong text in '+page.title())
+        #if 'Taken on'.upper() in texts[1].upper() or 'Taken in'.upper() in texts[1].upper() or 'According to Exif data'.upper(
+        #) in texts[1].upper():
+        #    print('wrong text in '+page.title())
 
         datestr = self.get_date_from_pagetext(texts[1])
         if datestr == False:
@@ -1264,7 +1276,7 @@ class Model_wiki:
         try:
             parser.parse(text)
         except:
-            print('invalid date: '+text)
+            print('invalid date: '+text+ ' ' + match.group(groupNum))
             return False
         return text
     
